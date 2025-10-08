@@ -34,7 +34,7 @@ in
 
   config = mkIf cfg.enable (
     lib.mkMerge [
-      ({
+      {
         hardware.tuxedo-drivers.enable = true;
 
         boot.kernelModules = [
@@ -59,11 +59,14 @@ in
         systemd = {
           packages = [ cfg.package ];
           services."tccd".wantedBy = [ "multi-user.target" ];
-          services."tccd-sleep".wantedBy = [ "sleep.target" ];
+          services."tccd-sleep" = {
+            wantedBy = [ "sleep.target" ];
+            path = [ pkgs.systemd ];
+          };
         };
 
         meta.maintainers = with lib.maintainers; [ sund3RRR ];
-      })
+      }
 
       (lib.mkIf (lib.elem "nvidia" config.services.xserver.videoDrivers) {
         systemd.services."tccd".path = [ config.hardware.nvidia.package ];

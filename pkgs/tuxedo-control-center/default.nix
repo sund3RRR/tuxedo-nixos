@@ -17,7 +17,7 @@
 }:
 
 let
-  version = "2.1.16";
+  version = "2.1.20";
   inherit nodejs;
 
   baseNodePackages = (
@@ -32,7 +32,7 @@ let
       owner = "tuxedocomputers";
       repo = "tuxedo-control-center";
       rev = "v${version}";
-      sha256 = "odGx1S6F5UVK73QjMI1np9Fx/QawRA+jnK/ZTzV6joI=";
+      hash = "sha256-3UlWjxypAyTW5FZ9I+1kjihrkc9WsagXrrFpD6Ibylk=";
     };
 
     preRebuild = ''
@@ -93,26 +93,26 @@ stdenv.mkDerivation {
         "$out/libexec/cameractrls.py" \
       --replace "/opt/tuxedo-control-center/resources/dist/tuxedo-control-center/data/camera/v4l2_kernel_names.json" \
         "$out/share/tcc/v4l2_kernel_names.json"
-    
+
     substituteInPlace src/e-app/main.ts \
       --replace "../../data/dist-data/tuxedo-control-center_256.png" "../../share/icons/hicolor/scalable/apps/tuxedo-control-center_256.png" \
       --replace "appPath, '../../data/dist-data'" "'$out/share/tcc'"
-    
+
     substituteInPlace src/dist-data/tccd-sleep.service \
       --replace "/bin/bash -c " ""
-    
+
     substituteInPlace src/dist-data/tccd.service \
       --replace "/opt/tuxedo-control-center/resources/dist/tuxedo-control-center/data/service/tccd" "$out/bin/tccd"
-    
+
     substituteInPlace src/dist-data/tuxedo-control-center-tray.desktop \
       --replace "/opt/tuxedo-control-center/tuxedo-control-center" "tuxedo-control-center" \
       --replace "Icon=tuxedo-control-center" "Icon=tuxedo-control-center_256"
-    
+
     substituteInPlace src/dist-data/tuxedo-control-center.desktop \
       --replace "/opt/tuxedo-control-center/tuxedo-control-center" "$out/bin/tuxedo-control-center" \
       --replace "/opt/tuxedo-control-center/resources/dist/tuxedo-control-center/data/dist-data/tuxedo-control-center_256.svg" \
         "$out/share/icons/hicolor/scalable/apps/tuxedo-control-center_256.svg"
-    
+
     substituteInPlace src/udev/99-webcam.rules \
       --replace "/usr/bin/python3" "${python3}/bin/python3" \
       --replace "/opt/tuxedo-control-center/resources/dist/tuxedo-control-center/data/camera/cameractrls.py" "$out/libexec/cameractrls.py" \
@@ -190,7 +190,15 @@ stdenv.mkDerivation {
   postFixup = ''
     makeWrapper ${nodejs}/bin/node $out/bin/tccd \
       --add-flags "$out/service-app/service-app/main.js" \
-      --prefix PATH : "${lib.makeBinPath [ gnugrep gawk xorg.xrandr procps which ]}" \
+      --prefix PATH : "${
+        lib.makeBinPath [
+          gnugrep
+          gawk
+          xorg.xrandr
+          procps
+          which
+        ]
+      }" \
       --prefix NODE_PATH : "$out/node_modules"
 
     makeWrapper ${electron}/bin/electron $out/bin/tuxedo-control-center \
