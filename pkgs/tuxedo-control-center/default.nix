@@ -17,7 +17,7 @@
 }:
 
 let
-  version = "2.1.20";
+  version = "2.1.22";
   inherit nodejs;
 
   baseNodePackages = (
@@ -32,7 +32,7 @@ let
       owner = "tuxedocomputers";
       repo = "tuxedo-control-center";
       rev = "v${version}";
-      hash = "sha256-3UlWjxypAyTW5FZ9I+1kjihrkc9WsagXrrFpD6Ibylk=";
+      hash = "sha256-W4890yTlMJaaC4g4Dmbj6mQHJTJLlB9z9OTxYj4TnhY=";
     };
 
     preRebuild = ''
