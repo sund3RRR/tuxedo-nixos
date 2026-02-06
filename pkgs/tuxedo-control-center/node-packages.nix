@@ -13420,8 +13420,8 @@ let
   args = {
     name = "tuxedo-control-center";
     packageName = "tuxedo-control-center";
-    version = "2.1.20";
-    src = ../../../../../tmp/nix-shell-2848-0/tmp.EmFlNfVwfO;
+    version = "2.1.22";
+    src = ../../../../../tmp/nix-shell-22175-562625760/tmp.QP1yD3H73H;
     dependencies = [
       sources."7zip-bin-5.0.3"
       (sources."@angular-devkit/architect-0.1002.4" // {
