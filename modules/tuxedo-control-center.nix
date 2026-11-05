@@ -56,14 +56,20 @@ in
         services.dbus.packages = [ cfg.package ];
         services.udev.packages = [ cfg.package ];
 
+
         systemd = {
           packages = [ cfg.package ];
           services."tccd".wantedBy = [ "multi-user.target" ];
           services."tccd-sleep" = {
             wantedBy = [ "sleep.target" ];
             path = [ pkgs.systemd ];
+            serviceConfig = {
+              ExecStart = "${pkgs.systemd}/bin/systemctl stop tccd";
+              ExecStop = "${pkgs.systemd}/bin/systemctl start tccd";
+            };
           };
         };
+
 
         meta.maintainers = with lib.maintainers; [ sund3RRR ];
       }
